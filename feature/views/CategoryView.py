@@ -4,10 +4,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from feature.serializers.CategorySerializer import CategoryModel, CategorySerializer
+from feature.serializers.CategorySerializer import CategoryModel, CategorySerializer, CategoryTreeSerializer
 
 
 class CategoryView(APIView):
+    def get_sub_categories(self, category):
+        pass
+
     def post(self, request, *args, **kwargs):
         try:
             serializer = CategorySerializer(data=request.data)
@@ -27,7 +30,7 @@ class CategoryView(APIView):
                 serializer = CategorySerializer(category)
             else:
                 categories = CategoryModel.objects.all()
-                serializer = CategorySerializer(categories, many=True)
+                serializer = CategoryTreeSerializer(categories, many=True)
 
             return Response(serializer.data)
 
